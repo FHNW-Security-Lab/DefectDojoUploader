@@ -118,7 +118,7 @@ Feel free to submit issues and enhancement requests for either component:
 
 ## License
 
-- AFLTriage: Check the [AFLTriage repository](https://github.com/quic/AFLTriage) for license information
+- AFLTriage: Check the [AFLTriage repository](https://github.com/quic/AFLTriage) for [license](https://github.com/quic/AFLTriage/blob/main/LICENSE) information
 - DefectDojo Uploader: BSD-3-Clause License
 
 ## Security Notes
