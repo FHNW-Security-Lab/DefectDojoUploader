@@ -108,7 +108,7 @@ Replace the following placeholders:
 ### Getting Help
 
 - For AFLTriage issues: Visit the [AFLTriage GitHub repository](https://github.com/quic/AFLTriage)
-- For DefectDojo API issues: Consult the [DefectDojo API documentation](https://defectdojo.readthedocs.io/en/latest/api-v2-docs.html)
+- For DefectDojo API issues: Consult the [DefectDojo API documentation](https://defectdojo.github.io/django-DefectDojo/)
 
 ## Contributing
 
