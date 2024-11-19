@@ -9,6 +9,7 @@ This system helps you analyze AFL fuzzing crashes and automatically upload the r
 - Running DefectDojo instance with API access
 - Rust (for building AFLTriage)
 - Python 3.x (for the DefectDojo uploader)
+- A DejectDojo Server (https://github.com/DefectDojo/django-DefectDojo)
 
 ## System Components
 
