@@ -75,7 +75,7 @@ def get_or_create_engagement(host, token, product_id, engagement_data):
         'name': engagement_data['name'],
         'product': product_id,
         'target_start': '2024-01-01',
-        'target_end': '2024-12-31',
+        'target_end': '2030-12-31',
         'status': 'In Progress',
         'engagement_type': 'CI/CD',
         'deduplication_on_engagement': False
