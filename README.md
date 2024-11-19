@@ -35,6 +35,7 @@ cd ..
 ### 2. Install DefectDojo Uploader
 
 ```bash
+sudo apt install python3-tomli
 # Clone the DefectDojo uploader repository
 git clone https://github.com/FHNW-Security-Lab/DefectDojoUploader
 ```
