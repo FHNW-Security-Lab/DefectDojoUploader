@@ -9,6 +9,7 @@ This system helps you analyze AFL fuzzing crashes and automatically upload the r
 - Running DefectDojo instance with API access
 - Rust (for building AFLTriage)
 - Python 3.x (for the DefectDojo uploader)
+- A DejectDojo Server (https://github.com/DefectDojo/django-DefectDojo)
 
 ## System Components
 
@@ -34,6 +35,7 @@ cd ..
 ### 2. Install DefectDojo Uploader
 
 ```bash
+sudo apt install python3-tomli
 # Clone the DefectDojo uploader repository
 git clone https://github.com/FHNW-Security-Lab/DefectDojoUploader
 ```
@@ -111,7 +113,7 @@ Replace the following placeholders:
 ### Getting Help
 
 - For AFLTriage issues: Visit the [AFLTriage GitHub repository](https://github.com/quic/AFLTriage)
-- For DefectDojo API issues: Consult the [DefectDojo API documentation](https://defectdojo.readthedocs.io/en/latest/api-v2-docs.html)
+- For DefectDojo API issues: Consult the [DefectDojo API documentation](https://defectdojo.github.io/django-DefectDojo/)
 
 ## Contributing
 
@@ -121,7 +123,7 @@ Feel free to submit issues and enhancement requests for either component:
 
 ## License
 
-- AFLTriage: Check the [AFLTriage repository](https://github.com/quic/AFLTriage) for license information
+- AFLTriage: Check the [AFLTriage repository](https://github.com/quic/AFLTriage) for [license](https://github.com/quic/AFLTriage/blob/main/LICENSE) information
 - DefectDojo Uploader: BSD-3-Clause License
 
 ## Security Notes
