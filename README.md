@@ -57,7 +57,7 @@ target_end = "<...>"         # Added end date
 [test]
 test_type = "<test-type>"    # add test type 
 target_start = "..."         # Added start date
-target_end = "..."           s# Added end date
+target_end = "..."           # Added end date
 ```
 
 Replace the placeholder values:
