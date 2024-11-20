@@ -74,8 +74,8 @@ def get_or_create_engagement(host, token, product_id, engagement_data):
     create_data = {
         'name': engagement_data['name'],
         'product': product_id,
-        'target_start': '2024-01-01',
-        'target_end': '2024-12-31',
+        'target_start': engagement_data.get('target_start', '2024-01-01'),  # Use date from config
+        'target_end': engagement_data.get('target_end', '2024-12-31'),      # Use date from config
         'status': 'In Progress',
         'engagement_type': 'CI/CD',
         'deduplication_on_engagement': False
@@ -118,8 +118,8 @@ def get_or_create_test(host, token, engagement_id, test_data):
     create_data = {
         'engagement': engagement_id,
         'test_type': test_type_id,
-        'target_start': '2024-01-01',
-        'target_end': '2024-12-31',
+        'target_start': test_data.get('target_start', '2024-01-01'),  # Use date from config
+        'target_end': test_data.get('target_end', '2024-12-31'),      # Use date from config
         'title': f"Fuzzing Test - {test_data['test_type']}"
     }
     
@@ -146,17 +146,20 @@ def get_shortened_filename(original_filename):
     return original_filename[:100]
 
 def get_unique_filename(base_title):
-    """Add timestamp to filename"""
+    """Add timestamp to filename and ensure .txt extension"""
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    name, ext = os.path.splitext(base_title)
-    return f"{name}_{timestamp}{ext}"
+    name = os.path.splitext(base_title)[0]  # Get name without extension
+    return f"{name}_{timestamp}.txt"  # Always add .txt extension
 
 def upload_file(host, token, finding_id, file_path, title):
     headers = {'Authorization': f'Token {token}'}
+    # Ensure title ends with .txt
+    if not title.endswith('.txt'):
+        title += '.txt'
     unique_title = get_unique_filename(title)
     
     with open(file_path, 'rb') as f:
-        files = {'file': f}
+        files = {'file': (unique_title, f)}  # Explicitly set filename in files
         data = {'title': unique_title}
         response = requests.post(
             f'{host}/api/v2/findings/{finding_id}/files/',
@@ -194,51 +197,6 @@ def parse_triage_file(file_path):
     })
     
     return results
-import os
-import re
-import requests
-import tomli
-import argparse
-from pathlib import Path
-from datetime import datetime
-
-# [Previous functions remain unchanged]
-
-def get_unique_filename(base_title):
-    """Add timestamp to filename and ensure .txt extension"""
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    name = os.path.splitext(base_title)[0]  # Get name without extension
-    return f"{name}_{timestamp}.txt"  # Always add .txt extension
-
-def upload_file(host, token, finding_id, file_path, title):
-    headers = {'Authorization': f'Token {token}'}
-    # Ensure title ends with .txt
-    if not title.endswith('.txt'):
-        title += '.txt'
-    unique_title = get_unique_filename(title)
-    
-    with open(file_path, 'rb') as f:
-        files = {'file': (unique_title, f)}  # Explicitly set filename in files
-        data = {'title': unique_title}
-        response = requests.post(
-            f'{host}/api/v2/findings/{finding_id}/files/',
-            headers=headers,
-            files=files,
-            data=data
-        )
-        if response.status_code != 201:
-            print(f"Error uploading file: {response.text}")
-            return False
-    return True
-
-def determine_severity(asan_report):
-    if any(x in asan_report.lower() for x in ['write', '-write-', 'store', 'heap-buffer-overflow']):
-        return "Critical", "S0"
-    elif 'segv' in asan_report.lower() or 'sigsegv' in asan_report.lower():
-        return "High", "S1"
-    elif any(x in asan_report.lower() for x in ['read', '-read-', 'load', 'exception']):
-        return "Medium", "S2"
-    return "High", "S1"  # Default to High if uncertain
 
 def clean_asan_report(asan_report):
     """Clean ASAN report by removing or replacing problematic markdown characters"""
@@ -348,6 +306,16 @@ def main():
     
     args = parser.parse_args()
     config = load_dojo_config(args.config)
+    
+    # Validate config dates
+    for section in ['engagement', 'test']:
+        if section in config:
+            for date_field in ['target_start', 'target_end']:
+                if date_field in config[section]:
+                    try:
+                        datetime.strptime(config[section][date_field], '%Y-%m-%d')
+                    except ValueError:
+                        raise ValueError(f"Invalid date format in {section}.{date_field}. Use YYYY-MM-DD format.")
     
     product_id = get_or_create_product(args.host, args.token, config['product'])
     engagement_id = get_or_create_engagement(args.host, args.token, product_id, config['engagement'])

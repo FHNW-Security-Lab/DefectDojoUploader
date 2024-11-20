@@ -44,14 +44,18 @@ Create a `dojo.toml` file in your workspace directory with the following content
 
 ```toml
 [product]
-name = "program-name"
-type = "product-type"
+name = "<program-name>"      # Add product name 
+type = "<product-type>"      # Add product type 
 
 [engagement]
-name = "engagement-name"
+name = "engagement-name" 
+target_start = "<...>"       # Added start date
+target_end = "<...>"         # Added end date
 
 [test]
-test_type = "test-type"
+test_type = "<test-type>"    # add test type 
+target_start = "..."         # Added start date
+target_end = "..."           s# Added end date
 ```
 
 Replace the placeholder values:
